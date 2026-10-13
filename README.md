@@ -279,36 +279,12 @@ A REST API uses:
 
 The main resource in CodeCraftHub is a course.
 
-|
- HTTP Method 
-|
- Meaning 
-|
-|
----
-|
----
-|
-|
-`GET`
-|
- Retrieve data 
-|
-|
-`POST`
-|
- Create new data 
-|
-|
-`PUT`
-|
- Update existing data 
-|
-|
-`DELETE`
-|
- Delete data 
-|
+| HTTP Method | Meaning |
+| --- | --- |
+| `GET` | Retrieve data |
+| `POST` | Create new data |
+| `PUT` | Update existing data |
+| `DELETE` | Delete data |
 
 ---
 
@@ -316,48 +292,14 @@ The main resource in CodeCraftHub is a course.
 
 Each course contains the following fields:
 
-|
- Field 
-|
- Description 
-|
-|
----
-|
----
-|
-|
-`id`
-|
- Automatically generated numeric ID 
-|
-|
-`name`
-|
- Required course name 
-|
-|
-`description`
-|
- Required course description 
-|
-|
-`target_date`
-|
- Required date in 
-`YYYY-MM-DD`
- format 
-|
-|
-`status`
-|
- Required status value 
-|
-|
-`created_at`
-|
- Automatically generated timestamp 
-|
+| Field | Description |
+| --- | --- |
+| `id` | Automatically generated numeric ID |
+| `name` | Required course name |
+| `description` | Required course description |
+| `target_date` | Required date in `YYYY-MM-DD` format |
+| `status` | Required status value |
+| `created_at` | Automatically generated timestamp |
 
 Valid status values are:
 
@@ -392,62 +334,14 @@ Base URL:
 http://localhost:5000
 ```
 
-|
- Method 
-|
- Endpoint 
-|
- Description 
-|
-|
----
-|
----
-|
----
-|
-|
-`POST`
-|
-`/api/courses`
-|
- Add a new course 
-|
-|
-`GET`
-|
-`/api/courses`
-|
- Get all courses 
-|
-|
-`GET`
-|
-`/api/courses/<id>`
-|
- Get one course 
-|
-|
-`PUT`
-|
-`/api/courses/<id>`
-|
- Update one course 
-|
-|
-`DELETE`
-|
-`/api/courses/<id>`
-|
- Delete one course 
-|
-|
-`GET`
-|
-`/api/courses/stats`
-|
- Get course statistics 
-|
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/api/courses` | Add a new course |
+| `GET` | `/api/courses` | Get all courses |
+| `GET` | `/api/courses/<id>` | Get one course |
+| `PUT` | `/api/courses/<id>` | Update one course |
+| `DELETE` | `/api/courses/<id>` | Delete one course |
+| `GET` | `/api/courses/stats` | Get course statistics |
 
 For example, the URL for course ID `1` is:
 
