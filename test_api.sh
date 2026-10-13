@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 
 DATA_COPY="/tmp/codecrafthub-courses.json"
 PORT="${COURSES_PORT:-5000}"
-BASE_URL="http://127.0.0.1:${PORT}"
+BASE_URL="http://localhost:${PORT}"
 SERVER_LOG="/tmp/codecrafthub-test-server.log"
 
 if [ -x .venv/bin/python ]; then

@@ -14,12 +14,39 @@ from pathlib import Path
 import json
 import os
 import re
+import threading
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+from werkzeug.serving import is_running_from_reloader, make_server, run_simple
 
 
 # Create the Flask application
 app = Flask(__name__)
+
+
+@app.after_request
+def add_cors_headers(response):
+    """Allow index.html to call the API when it is opened as a file."""
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = (
+        "GET, POST, PUT, DELETE, OPTIONS"
+    )
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    return response
+
+
+@app.before_request
+def answer_cors_preflight():
+    """Answer the browser check that runs before POST and PUT."""
+    if request.method == "OPTIONS":
+        return "", 204
+    return None
+
+
+@app.get("/")
+def home_page():
+    """Serve the course page from this same server."""
+    return send_from_directory(Path(__file__).parent, "index.html")
 
 
 # Store courses.json next to this file unless COURSES_FILE points elsewhere.
@@ -533,6 +560,29 @@ def handle_internal_server_error(_error):
     }), 500
 
 
+def run_on_localhost(listen_port, use_debug):
+    """Listen on localhost for both IPv4 and IPv6.
+
+    A browser opens localhost as ::1 first. Binding only 127.0.0.1
+    makes that connection fail, so index.html cannot load courses.
+    """
+    if not use_debug or is_running_from_reloader():
+        ipv4_server = make_server("127.0.0.1", listen_port, app, threaded=True)
+        threading.Thread(
+            target=ipv4_server.serve_forever,
+            daemon=True,
+        ).start()
+
+    run_simple(
+        "::1",
+        listen_port,
+        app,
+        use_reloader=use_debug,
+        use_debugger=use_debug,
+        threaded=True,
+    )
+
+
 # --------------------------------------------------------------------
 # Application startup
 # --------------------------------------------------------------------
@@ -551,4 +601,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("COURSES_PORT", "5000"))
     debug_value = os.environ.get("COURSES_DEBUG", "true").strip().lower()
     debug = debug_value in {"1", "true", "yes", "on"}
-    app.run(port=port, debug=debug)
+    run_on_localhost(port, debug)
